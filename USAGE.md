@@ -90,3 +90,53 @@ hinweise
 - **Code:** GPL v3  
 - **Beispielmaterial (Foto):** Jason Krüger für Wikimedia Deutschland e. V., Lizenz CC BY-SA 4.0 https://de.m.wikipedia.org/wiki/Datei:9._Pr%C3%A4sidium_von_Wikimedia_Deutschland_e._V.jpg
 Vorsitzende: Alice Wiegand,  Schatzmeisterin: Friederike von Borries, 6 Beisitzende: Jens Ohlig, Kamran Salimi, Nora Circosta, Larissa Borck, Raimond Spekking, Valerie Mocker
+
+## 7. Schritt-für-Schritt: Vereinsfoto mit Legende erstellen
+
+1. **Gesichter erkennen und Bild speichern**  
+   ```bash
+   python personen_label_gruppenfoto_v3f.py gruppenbild.jpg
+   ```  
+   → Ergebnis: `gruppenbild_mit_boxes.jpg` mit Nummern über den Personen.
+
+2. **Namen in CSV ergänzen**  
+   Öffne die automatisch erzeugte `gruppenbild_legende.csv` in Excel oder einem Editor und trage die Namen zu den Nummern ein.
+
+3. **Legende unter das Bild setzen**  
+   ```bash
+   python personen_label_gruppenfoto_v3f.py gruppenbild_mit_boxes.jpg      --names-csv gruppenbild_legende.csv      --append-legend --skip-detection
+   ```  
+   → Ergebnis: `gruppenbild_mit_legende.jpg` mit Nummern im Bild und Namensliste unten.
+
+4. **Optional: Optik anpassen**  
+   - Runde Badges: `--badge-shape circle`  
+   - Größere Schrift und passende Legende für A5: `--preset a5`  
+   - Einzelwerte feintunen (z. B. `--font-scale 1.2` oder `--legend-line-height 40`).
+
+Damit hast du in wenigen Schritten ein druckbares Vereins- oder Schulbild mit eingebauter Legende.
+
+
+---
+
+## 8. Namens-Frontend mit Tkinter
+
+Nach dem Speichern oder Bearbeiten der Boxen öffnet sich automatisch ein Fenster
+(zur Eingabe/Korrektur der Personennamen).
+
+### Funktionen
+- **Scrollbare Tabelle:** zeigt alle IDs und ermöglicht das Eintragen oder Ändern der Namen.  
+- **Optionen unten:**  
+  - Label-Modus: *Nummer + Name*, *nur Nummer* oder *nur Name*  
+  - Häkchen: *Legende anhängen*, *Runde Badges*  
+  - Anpassung von Schriftgröße, Dicke, Padding  
+- **Buttons:** *Speichern*, *Speichern & Rendern*, *Abbrechen*  
+
+### Tipps
+- Mit *Speichern* werden CSV/TXT sofort geschrieben.  
+- Mit *Speichern & Rendern* wird zusätzlich ein neues Bild erzeugt
+  (Nummern/Namen und ggf. Legende).  
+- Mit `--no-names-gui` lässt sich die GUI deaktivieren (z.B. für reinen Batch-Lauf).  
+- Mit `--skip-detection` kann man direkt aus vorhandenen CSV-Dateien neu rendern,
+  ohne erneut Boxen zu bearbeiten.
+
+Damit entfällt das mühsame parallele Editieren von CSV-Datei und Bild.
