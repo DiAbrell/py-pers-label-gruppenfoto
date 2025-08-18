@@ -59,7 +59,34 @@ python personen_label_gruppenfoto.py gruppenbild.jpg --skip-detection --names-cs
 
 ---
 
-## 4. Lizenzhinweise
+
+## 4. Badge-Formen (neu in v3f)
+Mit `--badge-shape` lässt sich die Form der Nummernbadges ändern:
+
+- `rect` (Standard): schwarzer Hintergrund in Rechteckform
+- `circle`: runde Nummern-Badges (ähnlich wie Nummernschilder)
+
+Beispiel:
+```bash
+python personen_label_gruppenfoto_v3f.py gruppenbild.jpg --badge-shape circle
+```
+
+## 5. Preset für A5-Querformat (neu in v3f)
+Mit `--preset a5` werden automatisch optimierte Einstellungen für Druckausgabe auf A5 quer (ca. 2480×1748 px bei 300 dpi) gesetzt.
+Dies entspricht folgenden Parametern:
+
+```
+--font-scale 1.4 --font-thickness 3 --badge-pad 8 --legend-title-scale 1.3 --legend-font-scale 1.0 --legend-thickness 3 --legend-strip-height 320 --legend-line-height 42 --legend-col-width 450
+```
+
+Beispiel:
+```bash
+python personen_label_gruppenfoto_v3f.py gruppenbild.jpg --preset a5 --badge-shape circle
+```
+
+## 6. Lizenz
+(verschoben aus Kapitel 4)
+hinweise
 - **Code:** GPL v3  
 - **Beispielmaterial (Foto):** Jason Krüger für Wikimedia Deutschland e. V., Lizenz CC BY-SA 4.0 https://de.m.wikipedia.org/wiki/Datei:9._Pr%C3%A4sidium_von_Wikimedia_Deutschland_e._V.jpg
 Vorsitzende: Alice Wiegand,  Schatzmeisterin: Friederike von Borries, 6 Beisitzende: Jens Ohlig, Kamran Salimi, Nora Circosta, Larissa Borck, Raimond Spekking, Valerie Mocker
