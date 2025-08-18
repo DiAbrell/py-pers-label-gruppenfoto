@@ -1,2 +1,3 @@
 # py-pers-label-gruppenfoto
-Programm um in einem Gruppenfoto (z.B. jpg) die einzelnen Personen mit einem Namenslabel zu versehen. Auswahl ob nur Nummer, oder nur Name oder beides. GUI um die Auswahlfelder für Porträtausschnitte anzupassen, zu ergänzen
+Ein Python-Skript, das Gesichter auf Gruppenfotos erkennt, mit Rechtecken und Nummern versieht und automatisch eine Legendenliste (CSV/TXT) erstellt.  
+Optional können die Namen der Personen hinzugefügt werden. Ideal für Vereins-, Schul- oder Familienfotos
