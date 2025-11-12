@@ -11,4 +11,5 @@ In der USAGE.md ist die Nutzung beschrieben, einschl. weiterer Parameter.
 Ein Aufruf über einfache GUI ist in der USAGE-GUI.md beschrieben.
 Eine EXE folgt.
 
-In /examples/ beispielhaft in der pdf Datei erläutert und ein Ergebnis gezeigt unter Nutzung des Beispielbildes bild.jpg
+In /examples/ beispielhaft in der pdf Datei erläutert und ein Ergebnis gezeigt, unter Nutzung des Beispielbildes bild.jpg
+Weitere Infos zu OpenCV z.B. https://mobile.fhstp.ac.at/allgemein/gesichtserkennung-mit-python-und-opencv/
