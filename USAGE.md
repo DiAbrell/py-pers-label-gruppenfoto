@@ -1,142 +1,126 @@
-# Anleitung zur Nutzung von py-pers-label-gruppenfoto
+# 🖼️ personen_label_gruppenfoto.py
 
-## 1. Erkennung und Bearbeitung der Boxen
-Starte das Skript mit:
-```bash
-python personen_label_gruppenfoto.py gruppenbild.jpg
-```
+Ein Python-Tool zur komfortablen Beschriftung von Gruppenfotos mit Namen oder Nummern.  
+Es kombiniert **Gesichtserkennung (OpenCV Haarcascade)**, eine **interaktive Editoransicht (Tkinter + OpenCV)** und die **Erzeugung nummerierter Bilder mit Legende (Pillow)**.
 
-### Steuerung in der GUI
-- **Linksklick + Ziehen außerhalb einer Box** → neue Box aufziehen  
-- **Linksklick + Ziehen innerhalb einer Box** → Box verschieben  
-- **Rechtsklick auf Box** → Box löschen  
-- **Taste r** → Reihenmodus umschalten  
-  - *Reihenmodus:* von oben nach unten, links nach rechts  
-  - *Single-Row-Modus:* durchgehend links nach rechts  
-- **Taste s** → Speichern und schließen  
-- **q oder ESC** → Abbrechen (die aktuelle Anordnung bleibt trotzdem gespeichert)
+Anleitung zur Nutzung von py-pers-label-gruppenfoto
+---
 
-Die Boxen und IDs werden in einer CSV-Datei gespeichert (`gruppenbild_legende.csv`).
+## ✨ Hauptfunktionen
+
+- Automatische Gesichtserkennung über OpenCV (`haarcascade_frontalface_alt2.xml`)
+- Manuelles Anpassen, Verschieben, Hinzufügen und Löschen von Boxen
+- Umschalten zwischen **„Reihenmodus“** und **„Single-Row-Modus“** (`r`-Taste)
+- Dynamische Einstellung der Reihen-Toleranz über `+ / -`
+- Export:
+  - nummeriertes Bild (`_nummeriert.jpg`)
+  - optional mit Legende (`_mit_legende.jpg`)
+  - Begleit-Dateien (`_legende.csv` + `_legende.txt`)
+- Tkinter-GUI zur Eingabe oder Korrektur der Personennamen
+- Unicode-fähige Textdarstellung (Umlaute, internationale Namen)
+- Anpassbare Schrift, Farbe, Position und Badge-Form
 
 ---
 
-## 2. Nachträgliches Ergänzen oder Korrigieren von Namen
-Die Namen sind in `gruppenbild_legende.csv` gespeichert.  
-Beispiel:
-
-```csv
-id,name,x,y,w,h
-1,Max,120,80,90,90
-2,Erika,250,82,88,88
-3,,380,85,92,92
-```
-
-- Tippfehler einfach direkt in der CSV korrigieren  
-- Fehlende Namen ergänzen (leere Felder ausfüllen)  
-
-Danach Skript erneut starten mit:
+## 🚀 Aufruf
 
 ```bash
-python personen_label_gruppenfoto.py gruppenbild.jpg --skip-detection --names-csv gruppenbild_legende.csv --append-legend
+python personen_label_gruppenfoto.py <bilddatei> [optionen]
 ```
 
-Das Originalbild wird neu mit den korrigierten Namen beschriftet.
-
----
-
-## 3. Steuerung, was im Bild angezeigt wird
-Mit `--label-mode` kannst du festlegen:
-
-- `--label-mode number` → nur Nummern  
-- `--label-mode name` → nur Namen  
-- `--label-mode both` (Standard) → Nummer + Name  
-
-Beispiel:
-
+Beispiele:
+- Standard Aufruf für ein neues Bild:
 ```bash
-python personen_label_gruppenfoto.py gruppenbild.jpg --skip-detection --names-csv gruppenbild_legende.csv --label-mode name
+python personen_label_gruppenfoto.py bild.jpg 
 ```
-
----
-
-
-## 4. Badge-Formen (neu in v3f)
-Mit `--badge-shape` lässt sich die Form der Nummernbadges ändern:
-
-- `rect` (Standard): schwarzer Hintergrund in Rechteckform
-- `circle`: runde Nummern-Badges (ähnlich wie Nummernschilder)
-
-Beispiel:
+- Aufruf eine bestehende Nummerierung und die Bezeichnungen bearbeiten:
 ```bash
-python personen_label_gruppenfoto_v3f.py gruppenbild.jpg --badge-shape circle
+python personen_label_gruppenfoto.py bild.jpg --skip-detection
 ```
 
-## 5. Preset für A5-Querformat (neu in v3f)
-Mit `--preset a5` werden automatisch optimierte Einstellungen für Druckausgabe auf A5 quer (ca. 2480×1748 px bei 300 dpi) gesetzt.
-Dies entspricht folgenden Parametern:
-
-```
---font-scale 1.4 --font-thickness 3 --badge-pad 8 --legend-title-scale 1.3 --legend-font-scale 1.0 --legend-thickness 3 --legend-strip-height 320 --legend-line-height 42 --legend-col-width 450
-```
-
-Beispiel:
-```bash
-python personen_label_gruppenfoto_v3f.py gruppenbild.jpg --preset a5 --badge-shape circle
-```
-
-## 6. Lizenz
-(verschoben aus Kapitel 4)
-hinweise
-- **Code:** GPL v3  
-- **Beispielmaterial (Foto):** Jason Krüger für Wikimedia Deutschland e. V., Lizenz CC BY-SA 4.0 https://de.m.wikipedia.org/wiki/Datei:9._Pr%C3%A4sidium_von_Wikimedia_Deutschland_e._V.jpg
-Vorsitzende: Alice Wiegand,  Schatzmeisterin: Friederike von Borries, 6 Beisitzende: Jens Ohlig, Kamran Salimi, Nora Circosta, Larissa Borck, Raimond Spekking, Valerie Mocker
-
-## 7. Schritt-für-Schritt: Vereinsfoto mit Legende erstellen
-
-1. **Gesichter erkennen und Bild speichern**  
-   ```bash
-   python personen_label_gruppenfoto_v3f.py gruppenbild.jpg
-   ```  
-   → Ergebnis: `gruppenbild_mit_boxes.jpg` mit Nummern über den Personen.
-
-2. **Namen in CSV ergänzen**  
-   Öffne die automatisch erzeugte `gruppenbild_legende.csv` in Excel oder einem Editor und trage die Namen zu den Nummern ein.
-
-3. **Legende unter das Bild setzen**  
-   ```bash
-   python personen_label_gruppenfoto_v3f.py gruppenbild_mit_boxes.jpg      --names-csv gruppenbild_legende.csv      --append-legend --skip-detection
-   ```  
-   → Ergebnis: `gruppenbild_mit_legende.jpg` mit Nummern im Bild und Namensliste unten.
-
-4. **Optional: Optik anpassen**  
-   - Runde Badges: `--badge-shape circle`  
-   - Größere Schrift und passende Legende für A5: `--preset a5`  
-   - Einzelwerte feintunen (z. B. `--font-scale 1.2` oder `--legend-line-height 40`).
-
-Damit hast du in wenigen Schritten ein druckbares Vereins- oder Schulbild mit eingebauter Legende.
 
 
 ---
 
-## 8. Namens-Frontend mit Tkinter
+## ⚙️ Parameterübersicht
 
-Nach dem Speichern oder Bearbeiten der Boxen öffnet sich automatisch ein Fenster
-(zur Eingabe/Korrektur der Personennamen).
+| Parameter | Typ / Default | Beschreibung |
+|------------|----------------|---------------|
+| **image** | Datei (Pfad) | Eingabebild (Pfad zur JPG-Datei) |
+| `--boxes-csv` | String, `""` | Pfad zu bestehender Box-CSV (z. B. aus früherem Lauf) |
+| `--skip-detection` | Flag | Überspringt automatische Gesichtserkennung |
+| `--no-box-editor` | Flag | Öffnet keinen Box-Editor (z. B. für Batch-Läufe) |
+| `--keep-ids-in-editor` | Flag | Bewahrt bestehende ID-Reihenfolge beim Editieren |
+| `--show-ids-in-editor` | Bool, `True` | Zeigt Live-IDs 1 .. N im Editor an |
+| `--label-mode` | Auswahl: `number`, `both`, `name` – *Default:* `number` | Anzeige: nur Nummer, nur Name oder beides |
+| `--append-legend` | Flag (True) | Legendenbild automatisch anhängen |
+| `--legend-note` | String | Hinweistext unter der Legende |
+| `--label-pos` | `below` / `above` | Position der Labels |
+| `--no-green-boxes` | Flag (True) | Versteckt grüne Boxen im Endbild |
+| `--row-tol` | Float, `0.75` | Toleranzfaktor für Reihenerkennung |
+| `--force-single-row` | Flag | Sortierung strikt links→rechts (Standard ist aktiv) |
+| `--detect-scale` | Float, `1.1` | Skalierungsfaktor der Haarcascade |
+| `--detect-min-neigh` | Int, `5` | Mindestnachbarn für Erkennung |
+| `--detect-min-size` | Int, `40` | Minimale Gesichtsgröße in Pixeln |
+| `--cascade` | Auswahl: `default`, `alt2`, `profile` – *Default:* `alt2` | Haarcascade-Typ |
+| `--font-path` | Pfad, leer | Optionaler Font (TTF oder OTF) |
+| `--font-scale` | Float, `0.9` | Schriftgröße (relativ zur Bildhöhe) |
+| `--font-thickness` | Int, `2` | Schriftstärke |
+| `--badge-pad` | Int, `6` | Innenabstand im Badge |
+| `--verbose` | Flag | Zusätzliche Konsolenausgabe (Debug) |
 
-### Funktionen
-- **Scrollbare Tabelle:** zeigt alle IDs und ermöglicht das Eintragen oder Ändern der Namen.  
-- **Optionen unten:**  
-  - Label-Modus: *Nummer + Name*, *nur Nummer* oder *nur Name*  
-  - Häkchen: *Legende anhängen*, *Runde Badges*  
-  - Anpassung von Schriftgröße, Dicke, Padding  
-- **Buttons:** *Speichern*, *Speichern & Rendern*, *Abbrechen*  
+---
 
-### Tipps
-- Mit *Speichern* werden CSV/TXT sofort geschrieben.  
-- Mit *Speichern & Rendern* wird zusätzlich ein neues Bild erzeugt
-  (Nummern/Namen und ggf. Legende).  
-- Mit `--no-names-gui` lässt sich die GUI deaktivieren (z.B. für reinen Batch-Lauf).  
-- Mit `--skip-detection` kann man direkt aus vorhandenen CSV-Dateien neu rendern,
-  ohne erneut Boxen zu bearbeiten.
+## 🖱️ Tastatursteuerung im Editor
 
-Damit entfällt das mühsame parallele Editieren von CSV-Datei und Bild.
+| Taste | Funktion |
+|--------|-----------|
+| `LMB` | Neue Box ziehen oder Box verschieben |
+| `RMB` | Box löschen |
+| `r` | Modus umschalten (Reihen ↔ Single-Row) |
+| `+` / `-` | Reihentoleranz anpassen |
+| `s` | Speichern und schließen |
+| `q` / `ESC` | Abbrechen / Schließen |
+
+---
+
+## 🧾 Ausgabe-Dateien
+
+Nach erfolgreichem Durchlauf entstehen (im selben Verzeichnis wie das Eingabebild):
+
+| Dateiname | Inhalt |
+|------------|--------|
+| `<name>_nummeriert.jpg` | nummeriertes Gruppenfoto |
+| `<name>_mit_legende.jpg` | Gruppenfoto inkl. Legende unten |
+| `<name>_legende.csv` | Positionsdaten (id, name, x, y, w, h) |
+| `<name>_legende.txt` | Lesbare Text-Legende (ID: Name) |
+
+---
+
+## 💡 Hinweise
+
+- Das Skript nutzt OpenCV (`cv2`), Pillow (`PIL`), NumPy und Tkinter (Standard in Python enthalten).
+- Beim ersten Start kann das automatische Laden der Haarcascade etwas dauern.
+- Wenn kein Font gefunden wird, bitte per `--font-path` manuell angeben, z. B.:
+  ```bash
+  --font-path "C:\Windows\Fonts\arial.ttf"
+  ```
+
+---
+
+## 🧰 Installation
+
+```bash
+pip install opencv-python pillow numpy
+```
+
+---
+
+## 🧑‍💻 Autor
+
+**Dieter Abrell**, Stuttgart  
+OpenCV / Tkinter / Pillow basierte Lösung für genealogische und historische Gruppenfotos.
+
+---
+
+*(Stand: 2025-11)*
