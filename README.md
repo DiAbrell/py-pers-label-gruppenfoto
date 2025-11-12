@@ -6,3 +6,9 @@ Ideal für Vereins-, Schul- oder Familienfotos.
 
 Verwendete Bibliotheken: OpenCV (Gesichtserkennung, interaktive Box-Bearbeitung) und Tkinter-GUI (Namenseingabe, Steuerung Ausgabeparamter)
 Erforderlich: Python ≥ 3.8  mit Installation der erforderliche Bibliotheken: pip install opencv-python pillow numpy
+
+In der USAGE.md ist die Nutzung beschrieben, einschl. weiterer Parameter.
+Ein Aufruf über einfache GUI ist in der USAGE-GUI.md beschrieben.
+Eine EXE folgt.
+
+Mit der Beispiel_Ergebnis_personen_label_gruppenfoto_mit_bild.pdf ist beispielhaft ein Ergebnis gezeigt unter Nutzung des Beispielbildes bild.jpg
